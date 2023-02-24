@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<!-- Designined by CodingLab | www.youtube.com/codinglabyt -->
+<html lang="en" dir="ltr">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<title> Responsiive Admin Dashboard | CodingLab </title>-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <!-- Boxicons CDN Link -->
+
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.2.0/luxon.min.js" integrity="sha512-oSluo60wIZQeIdcwvOUslPm9iHgUrdokcX35QFYOYxS0aFMWnd3VMhgxEObgBi3YgbDC0jZGV7VXMALlznfQtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-adapter-luxon/1.1.0/chartjs-adapter-luxon.min.js" integrity="sha512-M6umpUu17V/+t/YsUgEVBcI3aneYAW8W3o/8qmXGXglg1TumOEQQo2nvHPKVPHSv5ca3xAohHnpq16CSNsuLKg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    {% load tags %}
+    {% load static %}
+    <script src="{% static 'chartjs-chart-financial.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+
+
+
+    <title>My Linkly Page</title>
+</head>
+<body>
+{% include 'sidebar.html' %}
+
+<section class="home-section">
+    {% include 'navbar.html' %}
+
+    <div class="home-content">
+        <div class="overview-boxes">
+            <div class="box">
+                <div class="right-side">
+                    <div class="box-topic">SP500</div>
+                    <div class="number">{{ SP.value }}</div>
+                    <div class="sp500">
+                        <div class="indicator">
+                            <i class='{{ SP.arrow | safe }}'></i>
+                            <span class="text">{{ SP.diff }} <b>{{ SP.pct }}%</b> </span>
+                        </div>
+                    </div>
+                </div>
+                <i class='bx bxs-rocket {{ SP.rocket }}'></i>
+            </div>
+            <div class="box">
+                <div class="right-side">
+
+                    <div class="box-topic">NASDAQ</div>
+                    <div class="number">{{ NQ.value }}</div>
+                    <div class="indicator">
+
+                        <i class='{{ NQ.arrow }}'></i>
+
+                        <span class="text">{{ NQ.diff }} <b>{{ NQ.pct }}%</b> </span>
+                    </div>
+                </div>
+                <i class='bx bxs-rocket {{ NQ.rocket }}'></i>
+            </div>
+            <div class="box">
+                <div class="right-side">
+                    <div class="box-topic">DOW JONES</div>
+                    <div class="number">{{ DJ.value }}</div>
+                    <div class="indicator">
+                        <i class='{{ DJ.arrow }}'></i>
+                        <span class="text">{{ DJ.diff }} <b>{{ DJ.pct }}%</b> </span>
+                    </div>
+                </div>
+                <i class='bx bxs-rocket {{ DJ.rocket }}'></i>
+            </div>
+            <div class="box">
+                <div class="right-side">
+                    <div class="box-topic">DOLLAR INDEX</div>
+                    <div class="number">{{ DXY.value }}</div>
+                    <div class="indicator">
+                        <i class='{{ DXY.arrow }}'></i>
+                        <span class="text">{{ DXY.diff }} <b>{{ DXY.pct }}%</b> </span>
+                    </div>
+                </div>
+                <i class='bx bxs-rocket {{ DXY.rocket }}'></i>
+            </div>
+
+            <div class="box">
+
+                <div><canvas id="spChart"></canvas></div>
+
+            </div>
+            <div class="box">
+                <div><canvas id="nqChart"></canvas></div>
+            </div>
+            <div class="box">
+                <div><canvas id="djChart"></canvas></div>
+            </div>
+            <div class="box">
+                <div><canvas id="dxChart"></canvas></div>
+            </div>
+        </div>
+
+
+        <div class="most">
+        <div class="sales-boxes">
+            <div class="recent-sales box">
+                <div class="title">Most Active</div>
+                <div class="sales-details">
+                    <ul class="details">
+                        <li class="topic">Symbol</li>
+                        {% for key,value in active.Symbol.items %}
+                        <li><a href="{% url 'chart' value %}">{{value}}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">Name</li>
+                        {% for key,value in active.Name.items %}
+                        <li>{{value}}</li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">Price</li>
+                        {% for key,value in active.Price.items %}
+                        <li>{{value}}</li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">Change</li>
+                        {% for key,value in active.Change.items %}
+                        <li>{{value}}</li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">%</li>
+                        {% for key,value in active.Per_change.items %}
+                        <li>{{value}}%</li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">PE ratio</li>
+                        {% for key,value in active.PE_ratio.items %}
+                        <li>{{value }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <form action="" method="get">
+                    <button name="active_see_all" type="submit" value="active_see_all">See All</button>
+                </form>
+
+            </div>
+            </div>
+
+            <div class="sales-boxes">
+            <div class="recent-sales box">
+                <div class="title">Most Gainers</div>
+                <div class="sales-details">
+                    <ul class="details">
+                        <li class="topic">Symbol</li>
+                        {% for key,value in gainers.Symbol.items %}
+                        <li><a href="{% url 'chart' value %}">{{value}}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">Name</li>
+                        {% for key,value in gainers.Name.items %}
+                        <li>{{value}}</li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">Price</li>
+                        {% for key,value in gainers.Price.items %}
+                        <li>{{value}}</li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">Change</li>
+                        {% for key,value in gainers.Change.items %}
+                        <li>{{value}}</li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">%</li>
+                        {% for key,value in gainers.Per_change.items %}
+                        <li>{{value}}</li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">PE ratio</li>
+                        {% for key,value in gainers.PE_ratio.items %}
+                        <li>{{value}}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <form action="" method="get">
+
+                <button name="gainers_see_all" type="submit" value="gainers_see_all">See All</button>
+
+                </form>
+
+            </div>
+            </div>
+            <div class="sales-boxes">
+            <div class="recent-sales box">
+                <div class="title">Most Losers</div>
+                <div class="sales-details">
+                    <ul class="details">
+                        <li class="topic">Symbol</li>
+                        {% for key,value in losers.Symbol.items %}
+
+                        <li><a href="{% url 'chart' value %}">{{value}}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">Name</li>
+                        {% for key,value in losers.Name.items %}
+                        <li>{{value}}</li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">Price</li>
+                        {% for key,value in losers.Price.items %}
+                        <li>{{value}}</li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">Change</li>
+                        {% for key,value in losers.Change.items %}
+                        <li>{{value}}</li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">%</li>
+                        {% for key,value in losers.Per_change.items %}
+                        <li>{{value}}%</li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">PE ratio</li>
+                        {% for key,value in losers.PE_ratio.items %}
+                        <li>{{value}}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <form action="" method="get">
+                    <button name="losers_see_all" type="submit" value="losers_see_all">See All</button>
+                </form>
+
+            </div>
+            </div>
+              <div class="sales-boxes">
+            <div class="recent-sales box">
+                <div class="title">Futures</div>
+                <div class="sales-details">
+                    <ul class="details">
+                        <li class="topic">Symbol</li>
+                        {% for key,value in fu.Symbol.items %}
+                        <li><a href="{% url 'chart' value %}">{{value}}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">Name</li>
+                        {% for key,value in fu.Name.items %}
+                        <li>{{value}}</li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">Price</li>
+                        {% for key,value in fu.Price.items %}
+                        <li>{{value}}</li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">Change</li>
+                        {% for key,value in fu.Change.items %}
+                        <li>{{value}}</li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="details">
+                        <li class="topic">%</li>
+                        {% for key,value in fu.Per_change.items %}
+                        <li>{{value}}</li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+                <form action="" method="get">
+                    <button name="futures_see_all" type="submit" value="futures_see_all">See All</button>
+                </form>
+
+            </div>
+            </div>
+            </div>
+
+            <div class="sales-boxes" style="width: 100%">
+            <div class="recent-sales box" >
+                 <div class="title">Performance</div>
+                 <canvas id="sectorChart" ></canvas>
+
+
+
+
+            </div>
+             </div>
+
+
+
+
+</section>
+
+<script>
+    let sidebar = document.querySelector(".sidebar");
+    let sidebarBtn = document.querySelector(".sidebarBtn");
+    sidebarBtn.onclick = function() {
+        sidebar.classList.toggle("active");
+        if(sidebar.classList.contains("active")){
+            sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+        }else
+            sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+    }
+
+
+
+
+
+    const data_nq = {
+      datasets: [{
+        label: " nasdaq ",
+        data: [{% for d in data %}
+        {
+          x: {{d.x}},
+          o: {{d.o}},
+          h: {{d.h}},
+          l: {{d.l}},
+          c: {{d.c}}
+        },
+        {% endfor %}
+        ]
+      }]
+    };
+    const data_sp = {labels: {{ CHART.sp_labels | safe }},datasets: [{
+        label: 'SP500',
+        backgroundColor: 'rgb(30,70,161)',
+        borderColor: 'rgb(30,70,161)',
+        data: {{ CHART.sp_data }}}]};
+    const data_dx = {labels: {{ CHART.dxy_labels | safe }},datasets: [{
+        label: 'dolar',
+        backgroundColor: 'rgb(30,70,161)',
+        borderColor: 'rgb(30,70,161)',
+        data: {{ CHART.dxy_data }}}]};
+    const data_dj = {labels: {{ CHART.dj_labels | safe }},datasets: [{
+        label: 'dow jones',
+        backgroundColor: 'rgb(30,70,161)',
+        borderColor: 'rgb(30,70,161)',
+        data: {{ CHART.dj_data }}}]};
+
+
+    const data_se = {
+        labels: {{ SECTORS.labels | safe }},
+        datasets: [
+            {
+            label: 'RT',
+            backgroundColor: 'rgb(138,110,255)',
+            data:{{ SECTORS.RT | safe}},
+            },
+             {
+            label: '1D',
+            data:{{ SECTORS.1D | safe}},
+            backgroundColor: 'rgb(118,185,255)',
+            },
+
+    ]
+    }
+
+
+    const csec = {
+        type: 'bar',
+        data: data_se,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Chart.js Bar Chart'
+                }
+            }
+        },
+    };
+
+
+    const cnq = {
+        type: 'candlestick',
+        data: data_nq,
+
+    };
+    const csp = {
+        type: 'line',
+        data: data_sp,
+    };
+    const cdx = {
+        type: 'line',
+        data: data_dx,
+    };
+    const cdj = {
+        type: 'line',
+        data: data_dj,
+    };
+
+    const nqChart = new Chart(
+        document.getElementById('nqChart'),
+        cnq
+    );
+    const djChart = new Chart(
+        document.getElementById('djChart'),
+        cdj
+    );
+    const spChart = new Chart(
+        document.getElementById('spChart'),
+        csp
+    );
+    const dxChart = new Chart(
+        document.getElementById('dxChart'),
+        cdx
+    );
+    const sectorChart = new Chart(
+        document.getElementById('sectorChart'),
+        csec
+    );
+
+
+
+
+</script>
+
+</body>
+</html>
+

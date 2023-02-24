@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!-- Designined by CodingLab | www.youtube.com/codinglabyt -->
+<html lang="en" dir="ltr">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<title> Responsiive Admin Dashboard | CodingLab </title>-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <!-- Boxicons CDN Link -->
+
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.2.0/luxon.min.js" integrity="sha512-oSluo60wIZQeIdcwvOUslPm9iHgUrdokcX35QFYOYxS0aFMWnd3VMhgxEObgBi3YgbDC0jZGV7VXMALlznfQtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-adapter-luxon/1.1.0/chartjs-adapter-luxon.min.js" integrity="sha512-M6umpUu17V/+t/YsUgEVBcI3aneYAW8W3o/8qmXGXglg1TumOEQQo2nvHPKVPHSv5ca3xAohHnpq16CSNsuLKg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {% load tags %}
+    {% load static %}
+    <script src="{% static 'chartjs-chart-financial.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+
+
+
+    <title>My Linkly Page</title>
+</head>
+<body>
+{% include 'sidebar.html' %}
+
+<section class="home-section">
+    {% include 'navbar.html' %}
+
+    <div class="home-CHART">
+
+        {{candlestick | safe}}
+
+    </div>
+     <div class="home-CHART-radio">
+        <form action="">
+        <input type="radio" id="hourly" name="interval" value="1h">
+            <label for="hourly">Godzinowy&emsp;</label>
+        <input type="radio" id="daily" name="interval" value="1d">
+            <label for="daily">Dzienny&emsp;</label>
+        <input type="radio" id="tygodniowy" name="interval" value="1wk">
+            <label for="tygodniowy">Tygodniowy&nbsp;&nbsp;</label>
+        <input type="submit" value="Wybierz">
+        </form>
+    </div>
+
+
+  <br> <div>
+    {% load django_tables2 %}
+{% render_table table %}
+   </div>
+
+    <table>
+{% for i, j in data.items %}
+    <tr>
+        <td>{{ i }}</td>
+        <td>{{ j }}</td>
+    </tr>
+{% endfor %}
+</table>
+
+
+
+
+
+    <script>
+    let sidebar = document.querySelector(".sidebar");
+    let sidebarBtn = document.querySelector(".sidebarBtn");
+    sidebarBtn.onclick = function() {
+        sidebar.classList.toggle("active");
+        if(sidebar.classList.contains("active")){
+            sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+        }else
+            sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+    }
+    </script>
+     <p></p>
+    </section>
+
+  </body>
+</html>

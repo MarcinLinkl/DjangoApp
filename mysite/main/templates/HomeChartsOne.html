@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Financial | Chart</title>
+  </head>
+  <body>
+    <div class="chartBox">
+      <canvas id="myChart"></canvas>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.2.0/luxon.min.js" integrity="sha512-oSluo60wIZQeIdcwvOUslPm9iHgUrdokcX35QFYOYxS0aFMWnd3VMhgxEObgBi3YgbDC0jZGV7VXMALlznfQtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.min.js" integrity="sha512-tMabqarPtykgDtdtSqCL3uLVM0gS1ZkUAVhRFu1vSEFgvB73niFQWJuvviDyBGBH22Lcau4rHB5p2K2T0Xvr6Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-adapter-luxon/1.1.0/chartjs-adapter-luxon.min.js" integrity="sha512-M6umpUu17V/+t/YsUgEVBcI3aneYAW8W3o/8qmXGXglg1TumOEQQo2nvHPKVPHSv5ca3xAohHnpq16CSNsuLKg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      {% load static %}
+    <script src="{% static 'chartjs-chart-financial.js' %}"></script>
+    <h1>HEj</h1>
+    <div class='container'>
+    <script>
+        $(document).ready(function() {
+            var endpoint = '/api/data/'
+            var data = {}
+            $.ajax({
+                method: "GET",
+                url: endpoint,
+                success: function (dataframe) {
+                  data = dataframe
+
+                    console.log(dataframe)
+                    setChart()
+                },
+                error: function (error_data) {
+                    console.log("error")
+                    console.log(error_data)
+                }
+            })
+
+            function setChart() {
+                const config = {
+                    type: 'candlestick',
+                    data,
+                    options: {}
+
+                };
+
+                // render init block
+                const myChart = new Chart(
+                    document.getElementById('myChart'),
+                    config
+                );
+            }
+        })
+    </script>
+    </div>
+</body>
+</html>

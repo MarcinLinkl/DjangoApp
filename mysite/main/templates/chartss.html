@@ -1,0 +1,42 @@
+<head>
+  <!-- Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <!-- PlotlyFinance.js -->
+  <script src="https://cdn.rawgit.com/etpinard/plotlyjs-finance/master/plotlyjs-finance.js"></script>
+
+<body>
+  <p><b>Index : </b> </p>
+      <form action="" method="post">
+      {% csrf_token %}
+          <select name="dropdown_index">
+              {% for tikers_GPW in tikers_GPW %}
+                <option>{{tikers_GPW.name}}</option>
+              {% endfor %}
+          </select>
+      <p><b>Dates </b></p>
+            <select id="year_start" name="year_start">
+              <script>
+                 for(var i = 2022;i>1990; i--){
+                      document.write('<option value="'+i+'">'+i+'</option>');
+                  }
+              </script>
+            </select>
+            <select id="year_end" name="year_end">
+              <script>
+                  for(var i = 2022;i>1990; i--){
+                      document.write('<option value="'+i+'">'+i+'</option>');
+                  }
+              </script>
+            </select>
+      <input type="submit" value="select">
+      </form>
+    <form action="" method="get">
+    Update data base GPW
+    <button name="update_gpw_db" type="submit" value="update_gpw_db">Update GPW table</button>
+    </form>
+
+
+  <div>  {{candlestick | safe}} </div>
+  <br>
+  <br>
+</body>

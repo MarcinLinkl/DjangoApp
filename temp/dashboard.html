@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Financial | Chart</title>
+  </head>
+  <body>
+    <div class="chartBox">
+      <canvas id="myChart"></canvas>
+    </div>
+    <div class="chartBox">
+      <canvas id="myChart1"></canvas>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.2.0/luxon.min.js" integrity="sha512-oSluo60wIZQeIdcwvOUslPm9iHgUrdokcX35QFYOYxS0aFMWnd3VMhgxEObgBi3YgbDC0jZGV7VXMALlznfQtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.min.js" integrity="sha512-tMabqarPtykgDtdtSqCL3uLVM0gS1ZkUAVhRFu1vSEFgvB73niFQWJuvviDyBGBH22Lcau4rHB5p2K2T0Xvr6Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-adapter-luxon/1.1.0/chartjs-adapter-luxon.min.js" integrity="sha512-M6umpUu17V/+t/YsUgEVBcI3aneYAW8W3o/8qmXGXglg1TumOEQQo2nvHPKVPHSv5ca3xAohHnpq16CSNsuLKg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./chartjs-chart-financial.js"></script>
+  
+  
+   <script>
+    // setup
+    const startingdate = luxon.DateTime.fromRFC2822('15 Dec 2021 00:00 GMT');
+    const date2 = luxon.DateTime.fromRFC2822('16 Dec 2021 00:00 GMT');
+    const date3 = luxon.DateTime.fromRFC2822('17 Dec 2021 00:00 GMT');
+    const date4 = luxon.DateTime.fromRFC2822('18 Dec 2021 00:00 GMT');
+    const data = {
+      datasets: [{
+        data: [
+        {
+          x: startingdate.valueOf(),
+          o: 1,
+          h: 0.75,
+          l: 0.75,
+          c: 1.25
+        },
+        {
+          x: date2.valueOf(),
+          o: 1.20,
+          h: 1.5,
+          l: 0.75,
+          c: 0.9
+        },{
+          x: date3.valueOf(),
+          o: 1.20,
+          h: 9.5,
+          l: 0.05,
+          c: 7.9
+        },{
+          x: date4.valueOf(),
+          o: 12.20,
+          h: 12.7,
+          l: 10.75,
+          c: 11.9
+        }
+        ],
+      }]
+    };
+
+    // config 
+    const config = {
+      type: 'candlestick',
+      data,
+      options: {}
+
+    };
+
+    // render init block
+    const myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );const myChart1 = new Chart(
+      document.getElementById('myChart1'),
+      config
+    );
+    </script>
+
+  </body>
+</html>
