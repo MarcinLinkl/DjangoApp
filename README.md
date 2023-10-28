@@ -1,5 +1,5 @@
 # DjangoApp
-For live stocks analysis. Still in progress... 
+For live stocks analysis in python.
 # Main page live US stocks
 Main page fully completed
 ![main1](assets_jpg/main_jpg.jpg)
